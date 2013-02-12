@@ -1,4 +1,5 @@
 require 'dci'
+include DCI
 
 # Mixins are fixed rolls.
 module Balance
