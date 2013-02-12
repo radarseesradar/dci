@@ -2,7 +2,7 @@ require 'dci'
 include DCI
 
 # Mixins are fixed rolls.
-module Balance
+class Account
   def initialize(account_id)
     @account_id = account_id
     @balance    = 0
@@ -22,7 +22,8 @@ module Balance
 end
 
 #
-class Balance::TransferSource < Role
+
+class TransferSource < Role
   def transfer(amount)
     decrease_balance(amount)
     puts "Tranfered $#{amount} from account ##{account_id}."
@@ -30,7 +31,7 @@ class Balance::TransferSource < Role
 end
 
 #
-class Balance::TransferDestination < Role
+class TransferDestination < Role
   def transfer(amount)
     increase_balance(amount)
     puts "Tranfered $#{amount} into account ##{account_id}."
@@ -38,9 +39,9 @@ class Balance::TransferDestination < Role
 end
 
 # We can think of a context as setting a scene.
-class Balance::Transfer < Context
-  role :source_account      => Balance::TransferSource
-  role :destination_account => Balance::TransferDestination
+class Transfer < Context
+  role :source_account      => TransferSource
+  role :destination_account => TransferDestination
 
   def initialize(source_account, destination_account)
     self.source_account      = source_account
@@ -56,14 +57,10 @@ class Balance::Transfer < Context
   end
 end
 
-class Account
-  # An account by definition has a balance.
-  include Balance
-end
 
 acct1 = Account.new(000100)
 acct2 = Account.new(000200)
 
-Balance::Transfer.new(acct1, acct2).transfer(50)
+Transfer.new(acct1, acct2).transfer(50)
 
 
