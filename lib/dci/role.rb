@@ -39,6 +39,8 @@ module DCI
   #     end
   #
   class Role
+    
+    attr_accessor :context
 
     #
     def initialize(player)

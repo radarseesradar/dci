@@ -48,6 +48,47 @@ module DCI
   #
   class Context
 
+    # Declare a role mapping.
+    #
+    # This method accepts either two or three arguments. In the three argument
+    # form, the arguments are as follows:
+    #
+    #   role_name:: The name of the role in this context.
+    #   role_class:: The module that serves as the "methodful role".
+    #   obj:: The data object to which the role_class will be attached.
+    #
+    # In the two argument form, the role_name is omitted and the role_name
+    # is derived from the name of the role_class by converting from
+    # CamelCaseName to underscore_name. For instance, if the role_name
+    # is not specified, then a role_class called MoneySource would be
+    # named money_source.
+    #
+    def role(*args)
+
+      case args.size
+      when 2
+        role_class = args[0]
+        obj = args[1]
+        role_name = Util.underscore(role_class.name).to_sym
+      when 3
+        role_name = args[0]
+        role_class = args[1]
+        obj = args[2]
+      else
+        raise ArgumentError
+      end
+      
+      role_obj = role_class.new( obj )
+      
+      role_obj.context = self
+
+      self.singleton_class.send(:define_method, role_name) do
+        role_obj
+      end
+      
+    end
+
+
     # Define a role given the name the role will use in this context,
     # and the role class that is to be played.
     #

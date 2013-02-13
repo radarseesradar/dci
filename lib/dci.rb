@@ -31,6 +31,8 @@
 module DCI
 end
 
+require 'dci/util'    # NAMESPACE::RoleName to snake case roll_name
+
 require 'dci/object'  # data
 require 'dci/context' # context
 require 'dci/role'    # interation
