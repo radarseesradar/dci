@@ -91,12 +91,16 @@ module DCI
       
       role_obj.context = self
 
-      self.singleton_class.send(:define_method, role_name) do
+      singleton_class.send(:define_method, role_name) do
         role_obj
       end
       
     end
 
+  end
+  
+  def roles
+    singleton_methods.map{ | sym | send(sym) }
   end
 
 end

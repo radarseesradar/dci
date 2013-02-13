@@ -54,7 +54,7 @@ module DCI
     # In rails, access to the player's class might be especially important, as rails uses it to
     # interface to active record.  Still, whenever possible try to avoid using this method.  
     # Whenever you find yourself using this method, always ask yourself
-    # if you can possibly achieve your goal by writing more code into the role class itself.
+    # if you can possibly achieve your goal in some other way.
     attr_reader   :player
 
     #
@@ -63,7 +63,6 @@ module DCI
     end
 
     #
-    # @todo Should use #public_send?
     def method_missing(s, *a, &b)
       @player.__send__(s, *a, &b)
     end
