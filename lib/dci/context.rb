@@ -87,7 +87,7 @@ module DCI
         raise ArgumentError
       end
       
-      role_obj = role_class.new( obj )
+      role_obj = obj.as_role role_class
       
       role_obj.context = self
 

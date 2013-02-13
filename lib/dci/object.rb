@@ -44,4 +44,7 @@
 #
 # @todo Should objects track the roles in which they are presently particiapting?
 class Object
+  def as_role role_class
+    role_class.new( self )
+  end
 end
