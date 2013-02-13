@@ -88,59 +88,6 @@ module DCI
       
     end
 
-
-    # Define a role given the name the role will use in this context,
-    # and the role class that is to be played.
-    #
-    def self.role(name_to_role)
-      @roles = nil  # reset
-
-      name_to_role.each do |name, role|
-        define_method("role_#{name}"){ role }
-
-        module_eval %{
-          def #{name}=(data)
-            @#{name} = role_#{name}.new(data)
-          end
-
-          def #{name}
-            @#{name}
-          end
-        }
-      end
-    end
-
-    # Return a list of the names of defined roles.
-    #
-    # TODO: Consider private vs public roles.
-    def self.roles
-      @roles ||= (
-        list = []
-        instance_methods.each do |name|
-          next unless name.to_s.start_with?('role_')
-          list << name.to_s[5..-1].to_sym
-        end
-        list    
-      )
-    end
-
-    # The default contructor can be used to assign roles via
-    # a settings hash.
-    #
-    def initialize(settings={})
-      settings.each do |k,v|
-        __send__("#{k}=", v)
-      end
-    end
-
-    # Return Array of all role instances in the context.
-    #
-    def roles
-      self.class.roles.map do |name|
-        __send__(name)
-      end
-    end
-
   end
 
 end
