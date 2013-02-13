@@ -5,8 +5,8 @@ module DCI
   # combine the state and methods of a Data (domain) object with methods (but no
   # state, as Roles are stateless) from one or more Roles. In good DCI style,
   # a Role addresses another object only in terms of its (methodless) Role. There
-  # is a special Role called `@self` which binds to the object playing the current
-  # Role. Code within a Role method may invoke a method on `@self` and thereby
+  # is a special Role called `@player` which binds to the object playing the current
+  # Role. Code within a Role method may invoke a method on `@player` and thereby
   # invoke a method of the Data part of the current object. One curious aspect
   # of DCI is that these bindings are guaranteed to be in place only at run time
   # (using a variety of approaches and conventions; C++ templates can be used to
@@ -22,21 +22,27 @@ module DCI
   # on as a result of playing a particular Role.
   #
   # In the money transfer use case, for example, the role methods in the
-  # SourceAccount and DestinationAccount enact the actual transfer.
+  # MoneySource and MoneySkin enact the actual transfer.
   #
-  #     class Account::TransferWithdraw < Role
-  #       def transfer(amount)
-  #         decrease_balance(amount)
-  #         log "Tranfered from account #{account_id} $#{amount}"
+  #   class Account  
+  #
+  #     class MoneySource < Role
+  #       def transfer_out(amount)
+  #         log "Transferring #{amount} from account #{self.id} to account #{context.money_sink.id}"
+  #         self.balance -= amount
+  #         log "Source account new balance: #{self.balance}"
+  #         context.money_sink.transfer_in(amount)
   #       end
   #     end
   #
-  #     class Account::TransferDepoit < Role
-  #       def transfer(amount)
-  #         increase_balance(amount)
-  #         log "Tranfered into account #{account_id} $#{amount}"
+  #     class MoneySink < Role
+  #       def transfer_in(amount)
+  #         self.balance += amount
+  #         log "Destination account new balance: #{self.balance}"
   #       end
   #     end
+  #
+  #  end
   #
   class Role
     
@@ -44,13 +50,13 @@ module DCI
 
     #
     def initialize(player)
-      @self = player
+      @player = player
     end
 
     #
     # @todo Should use #public_send?
     def method_missing(s, *a, &b)
-      @self.__send__(s, *a, &b)
+      @player.__send__(s, *a, &b)
     end
 
   end

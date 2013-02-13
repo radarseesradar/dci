@@ -1,5 +1,4 @@
 require 'dci'
-include DCI
 
 # Domain/data objects are plain old Ruby objects.
 class Account
@@ -22,11 +21,12 @@ class Account
   end
 end
 
-# Roles are plain old Ruby modules, and automatically have access to
-# the invoking context.
+# Roles are subclasses of class Role.
+# Notice that roles collaborate with other roles via the context.
+# Notice that simple non-role types (e.g. amount) are passed as arguments.
 class Account
 
-  class MoneySource < Role
+  class MoneySource < DCI::Role
     def transfer_out(amount)
       puts("Transferring #{amount} from account #{self.id} to account #{context.money_sink.id}")
       self.balance -= amount
@@ -35,7 +35,7 @@ class Account
     end
   end
 
-  class MoneySink < Role
+  class MoneySink < DCI::Role
     def transfer_in(amount)
       self.balance += amount
       puts("Destination account new balance: #{self.balance}")
@@ -44,15 +44,15 @@ class Account
 
 end
 
-# Contexts are Ruby classes that include the Brassbound::Context module.
+# Contexts are subclasses of context.
 # The common idiom is for the initialize method to create all of the
 # necessary objects and declare how they are bound to roles.
-# Then, within the scope of the execute method, the objects will have been
+# Then, within the scope of the call method, the objects will have been
 # bound to the declared roles, and can be accessed by the role name
 # (convert to lower case with underscores by default).
 class Account
 
-  class TransferFunds < Context
+  class TransferFunds < DCI::Context
 
     def initialize(source_account_id, dest_account_id, amount)
       @amount = amount

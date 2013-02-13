@@ -30,21 +30,30 @@ module DCI
   #
   # An example of a context could be a wire transfer between two accounts,
   # where data models (the banking accounts) are used through roles named
-  # SourceAccount and # DestinationAccount. 
+  # MoneySource and # MoneySink. 
   #
-  #     class Account::Transfer < Context
-  #       role :source_account      => Account::TransferWithdraw
-  #       role :destination_account => Account::TransferDeposit
-  #
-  #       def initialize(source_account, destination_account)
-  #         self.source_account      = source_account
-  #         self.destination_account = destination_account
-  #       end
-  #
-  #       def transfer(amount)
-  #         roles.each{ |role| role.transfer(amount) }
-  #       end
+  # class Account
+  # 
+  #   class TransferFunds < Context
+  # 
+  #     def initialize(source_account_id, dest_account_id, amount)
+  #       @amount = amount
+  # 
+  #       role MoneySource, Account.find(source_account_id)
+  #       role MoneySink, Account.find(dest_account_id)
   #     end
+  # 
+  #     def call
+  #       # Here, money_source refers to the object bound to the MoneySource role
+  #       # in the initialize method.
+  #       money_source.transfer_out(@amount)
+  #     end
+  #   end
+  # 
+  # end
+  # 
+  # # Now let's create and execute our context.
+  # Account::TransferFunds.new(1, 2, 100).call
   #
   class Context
 
