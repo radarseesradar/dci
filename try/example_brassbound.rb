@@ -24,20 +24,24 @@ end
 
 # Roles are plain old Ruby modules, and automatically have access to
 # the invoking context.
-class MoneySource < Role
-  def transfer_out(amount)
-    puts("Transferring #{amount} from account #{self.id} to account #{context.money_sink.id}")
-    self.balance -= amount
-    puts("Source account new balance: #{self.balance}")
-    context.money_sink.transfer_in(amount)
-  end
-end
+class Account
 
-class MoneySink < Role
-  def transfer_in(amount)
-    self.balance += amount
-    puts("Destination account new balance: #{self.balance}")
+  class MoneySource < Role
+    def transfer_out(amount)
+      puts("Transferring #{amount} from account #{self.id} to account #{context.money_sink.id}")
+      self.balance -= amount
+      puts("Source account new balance: #{self.balance}")
+      context.money_sink.transfer_in(amount)
+    end
   end
+
+  class MoneySink < Role
+    def transfer_in(amount)
+      self.balance += amount
+      puts("Destination account new balance: #{self.balance}")
+    end
+  end
+
 end
 
 # Contexts are Ruby classes that include the Brassbound::Context module.
@@ -46,22 +50,26 @@ end
 # Then, within the scope of the execute method, the objects will have been
 # bound to the declared roles, and can be accessed by the role name
 # (convert to lower case with underscores by default).
-class TransferFunds < Context
+class Account
 
-  def initialize(source_account_id, dest_account_id, amount)
-    @amount = amount
+  class TransferFunds < Context
 
-    role MoneySource, Account.find(source_account_id)
-    role MoneySink, Account.find(dest_account_id)
+    def initialize(source_account_id, dest_account_id, amount)
+      @amount = amount
+
+      role MoneySource, Account.find(source_account_id)
+      role MoneySink, Account.find(dest_account_id)
+    end
+
+    def call
+      # Here, money_source refers to the object bound to the MoneySource role
+      # in the initialize method.
+      money_source.transfer_out(@amount)
+    end
   end
 
-  def call
-    # Here, money_source refers to the object bound to the MoneySource role
-    # in the initialize method.
-    money_source.transfer_out(@amount)
-  end
 end
 
 # Now let's create and execute our context.
-TransferFunds.new(1, 2, 100).call
+Account::TransferFunds.new(1, 2, 100).call
 

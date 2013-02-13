@@ -23,44 +23,52 @@ end
 
 #
 
-class TransferSource < Role
-  def transfer(amount)
-    decrease_balance(amount)
-    puts "Tranfered $#{amount} from account ##{account_id}."
-  end
-end
+class Account
 
-#
-class TransferDestination < Role
-  def transfer(amount)
-    increase_balance(amount)
-    puts "Tranfered $#{amount} into account ##{account_id}."
-  end
-end
-
-# We can think of a context as setting a scene.
-class Transfer < Context
-  role :source_account      => TransferSource
-  role :destination_account => TransferDestination
-
-  def initialize(source_account, destination_account)
-    self.source_account      = source_account
-    self.destination_account = destination_account
-  end
-
-  def transfer(amount)
-    begin
-      puts "Begin transfer."
-      roles.each{ |role| role.transfer(amount) }
+  class TransferSource < Role
+    def transfer(amount)
+      decrease_balance(amount)
+      puts "Tranfered $#{amount} from account ##{account_id}."
     end
-    puts "Transfer complete."
   end
+
+  #
+  class TransferDestination < Role
+    def transfer(amount)
+      increase_balance(amount)
+      puts "Tranfered $#{amount} into account ##{account_id}."
+    end
+  end
+
+end
+
+
+class Account
+  # We can think of a context as setting a scene.
+  class Transfer < Context
+    role :source_account      => TransferSource
+    role :destination_account => TransferDestination
+
+    def initialize(source_account, destination_account)
+      self.source_account      = source_account
+      self.destination_account = destination_account
+    end
+
+    def transfer(amount)
+      begin
+        puts "Begin transfer."
+        roles.each{ |role| role.transfer(amount) }
+      end
+      puts "Transfer complete."
+    end
+  end
+
 end
 
 
 acct1 = Account.new(000100)
 acct2 = Account.new(000200)
 
-Transfer.new(acct1, acct2).transfer(50)
+Account::Transfer.new(acct1, acct2).transfer(50)
 
 
