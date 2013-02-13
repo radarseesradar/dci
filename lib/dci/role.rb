@@ -47,6 +47,15 @@ module DCI
   class Role
     
     attr_accessor :context
+    
+    # This accessor is probably illegal in strict DCI, so use it with extreme caution.
+    # Nevertheless, due to the inherent limitations of our delegation approach to implementing DCI,
+    # it might occasionally be useful to get to the identity or the class of the player.
+    # In rails, access to the player's class might be especially important, as rails uses it to
+    # interface to active record.  Still, whenever possible try to avoid using this method.  
+    # Whenever you find yourself using this method, always ask yourself
+    # if you can possibly achieve your goal by writing more code into the role class itself.
+    attr_reader   :player
 
     #
     def initialize(player)
