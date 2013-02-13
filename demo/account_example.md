@@ -29,9 +29,9 @@ First we need our Data model. In the example that is the Account class.
 We set up two Roles, one role for withdrawing money from an account,
 and one for depositing money into an account.
 
-# Roles are subclasses of class Role.
-# Notice that roles collaborate with other roles via the context.
-# Notice that simple non-role types (e.g. amount) are passed as arguments.
+Roles are subclasses of class Role.
+Notice that roles collaborate with other roles via the context.
+Notice that simple non-role types (e.g. amount) are passed as arguments.
     class Account
 
       class MoneySource < DCI::Role
@@ -55,12 +55,13 @@ and one for depositing money into an account.
 Now we create a Context which will assign accounts to the roles
 and used to perform the transfer.
 
-# Contexts are subclasses of context.
-# The common idiom is for the initialize method to create all of the
-# necessary objects and declare how they are bound to roles.
-# Then, within the scope of the call method, the objects will have been
-# bound to the declared roles, and can be accessed by the role name
-# (convert to lower case with underscores by default).
+Contexts are subclasses of context.
+The common idiom is for the initialize method to create all of the
+necessary objects and declare how they are bound to roles.
+Then, within the scope of the call method, the objects will have been
+bound to the declared roles, and can be accessed by the role name
+(convert to lower case with underscores by default).
+
     class Account
 
       class TransferFunds < DCI::Context
