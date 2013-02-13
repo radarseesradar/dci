@@ -13,7 +13,7 @@ concepts developed by Trygve Reenskaug, Reenskaug, and James O. Coplien.
 
 It defines two reusable base classes, the Role and Context. The best way
 to understand their usage is to look at the QED documentation provided
-([for example](https://github.com/rubyworks/dci/blob/master/demo/account_example.md)).
+([for example](https://github.com/radarseesradar/dci/blob/master/demo/account_example.md)).
 
 
 ## Installation
