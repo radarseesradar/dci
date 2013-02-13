@@ -23,26 +23,28 @@
 # thinking "data" in DCI, it means thinking more about the instances at run time
 # than about the classes from which they were instantiated. 
 #
-#     class Account
-#       def initialize(accountId)
-#         @account_id = accountId
-#         @balance    = 0
-#       end
-#       def account_id
-#         @account_id
-#       end
-#       def available_balance
-#         @balance
-#       end
-#       def increase_balance(amount)
-#         @balance += amount
-#       end
-#       def decrease_balance(amount)
-#         @balance -= amount
-#       end
+# Domain/data objects are plain old Ruby objects.
+# class Account
+#   # Pretend to lookup accounts in a database.
+#   def self.find(account_id)
+#     case account_id
+#     when 1
+#       Account.new(account_id, 2000)
+#     when 2
+#       Account.new(account_id, 1000)
 #     end
+#   end
+# 
+#   attr_reader   :id
+#   attr_accessor :balance
+# 
+#   def initialize(id, balance)
+#     @id = id
+#     @balance = balance
+#   end
+# end
 #
-# @todo Should objects track the roles in which they are presently particiapting?
+#
 class Object
   def as_role role_class
     role_class.new( self )
