@@ -32,6 +32,7 @@ and one for depositing money into an account.
 Roles are subclasses of class Role.
 Notice that roles collaborate with other roles via the context.
 Notice that simple non-role types (e.g. amount) are passed as arguments.
+
     class Account
 
       class MoneySource < DCI::Role
