@@ -18,6 +18,11 @@ class Account
   def initialize(balance)
     @balance = balance
   end
+  
+  private
+  
+  def private_method
+  end
 end
 
 class MoneySource < Role
@@ -68,6 +73,9 @@ describe Context do
       mapping = subject.money_source
       mapping.class.should == MoneySource
       mapping.player.should == source_account
+      mapping.should respond_to(:balance)
+      mapping.should_not respond_to(:private_method)
+      expect {mapping.private_method}.to raise_error(NoMethodError)
 
       subject.role :money_sink, MoneySink, dest_account
       mapping = subject.money_sink

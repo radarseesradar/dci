@@ -64,7 +64,11 @@ module DCI
 
     #
     def method_missing(s, *a, &b)
-      @player.__send__(s, *a, &b)
+      @player.public_send(s, *a, &b)
+    end
+    
+    def respond_to_missing?(method_name, include_private = false )
+      @player.respond_to?(method_name, include_private)
     end
 
   end
