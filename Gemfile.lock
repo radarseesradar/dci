@@ -1,0 +1,28 @@
+GIT
+  remote: git://github.com/radarseesradar/dumb_delegator.git
+  revision: 8261733e769e495e53171d7a08269afe468bceea
+  specs:
+    dumb_delegator (0.6.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ansi (1.4.3)
+    brass (1.2.1)
+    detroit (0.4.0)
+      facets
+      indexer
+    facets (2.9.3)
+    indexer (0.3.1)
+    qed (2.9.1)
+      ansi
+      brass
+      facets (>= 2.8)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  detroit
+  dumb_delegator!
+  qed
