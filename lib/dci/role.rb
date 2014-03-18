@@ -1,3 +1,4 @@
+require 'dumb_delegator'
 module DCI
 
   # Interaction - The Interaction is "what the system does." The Interaction
@@ -44,33 +45,8 @@ module DCI
   #
   #  end
   #
-  class Role
-    
+  class Role < ::DumbDelegator
     attr_accessor :context
-    
-    # This accessor is probably illegal in strict DCI, so use it with extreme caution.
-    # Nevertheless, due to the inherent limitations of our delegation approach to implementing DCI,
-    # it might occasionally be useful to get to the identity or the class of the player.
-    # In rails, access to the player's class might be especially important, as rails uses it to
-    # interface to active record.  Still, whenever possible try to avoid using this method.  
-    # Whenever you find yourself using this method, always ask yourself
-    # if you can possibly achieve your goal in some other way.
-    attr_reader   :player
-
-    #
-    def initialize(player)
-      @player = player
-    end
-
-    #
-    def method_missing(s, *a, &b)
-      @player.public_send(s, *a, &b)
-    end
-    
-    def respond_to_missing?(method_name, include_private = false )
-      @player.respond_to?(method_name, include_private)
-    end
-
   end
 
 end
