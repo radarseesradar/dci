@@ -46,7 +46,15 @@
 #
 #
 class Object
+
   def as_role role_class
-    role_class.new( self )
+    role = role_class.new( self )
+    role.role_name = Util.underscore(role_class.name)
+    role
   end
+
+  def role_name
+    Util.underscore( self.class.name )
+  end
+
 end

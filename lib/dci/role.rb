@@ -46,6 +46,7 @@ module DCI
   #  end
   #
   class Role < ::DumbDelegator
+    attr_accessor :role_name
     attr_accessor :context
   end
 

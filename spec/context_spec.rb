@@ -69,9 +69,14 @@ describe Context do
 
   context "#role" do
     it "declares a role mapping" do
+      subject.role_name.should == 'context'
+      source_account.role_name.should == 'account'
       subject.role MoneySource, source_account
+      subject.role_name.should == 'context'
+      source_account.role_name.should == 'account'
       mapping = subject.money_source
       mapping.class.should == Account
+      mapping.role_name.should == 'money_source'
       mapping.should == source_account
       mapping.should respond_to(:balance)
       mapping.should respond_to(:transfer_out)
@@ -80,8 +85,10 @@ describe Context do
       expect {mapping.private_method}.to raise_error(NoMethodError)
       
       subject.role :money_sink, MoneySink, dest_account
+      subject.role_name.should == 'context'
       mapping = subject.money_sink
       mapping.class.should == Account
+      mapping.role_name.should == 'money_sink'
       mapping.should == dest_account
       mapping.should respond_to(:balance)
       mapping.should_not respond_to(:transfer_out)
