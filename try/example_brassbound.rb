@@ -27,11 +27,11 @@ end
 class Account
 
   class MoneySource < DCI::Role
-    def transfer_out(amount)
+    def transfer_out(amount, money_sink = context.money_sink)
       puts("Transferring #{amount} from account #{self.id} to account #{context.money_sink.id}")
       self.balance -= amount
       puts("Source account new balance: #{self.balance}")
-      context.money_sink.transfer_in(amount)
+      money_sink.transfer_in(amount)
     end
   end
 

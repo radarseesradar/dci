@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/radarseesradar/dumb_delegator.git
-  revision: 8261733e769e495e53171d7a08269afe468bceea
+  revision: a638a3f34d9d5993ce4bb04cf295e5ca5305536b
   specs:
-    dumb_delegator (0.6.0)
+    dumb_delegator (0.7.0)
 
 GEM
   remote: https://rubygems.org/
