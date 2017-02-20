@@ -77,7 +77,7 @@ describe Context do
       mapping = subject.money_source
       mapping.class.should == Account
       mapping.role_name.should == 'money_source'
-      mapping.should == source_account
+      expect(mapping).to eq(source_account)
       mapping.should respond_to(:balance)
       mapping.should respond_to(:transfer_out)
       mapping.should_not respond_to(:transfer_in)
@@ -89,7 +89,7 @@ describe Context do
       mapping = subject.money_sink
       mapping.class.should == Account
       mapping.role_name.should == 'money_sink'
-      mapping.should == dest_account
+      expect(mapping).to  eq(dest_account)
       mapping.should respond_to(:balance)
       mapping.should_not respond_to(:transfer_out)
       mapping.should respond_to(:transfer_in)
@@ -101,13 +101,13 @@ describe Context do
   context "#call" do
     it "binds all roles to their mapped objects" do
       transfer_funds_context.call do |ctx|
-        ctx.source_account.should == source_account
+        expect(ctx.source_account).to  eq(source_account)
         ctx.source_account.should be_kind_of(Account)
         ctx.source_account.should be_instance_of(Account)
         ctx.source_account.should respond_to(:transfer_out)
         ctx.source_account.should_not respond_to(:transfer_in)
 
-        ctx.dest_account.should == dest_account
+        expect(ctx.dest_account).to eq(dest_account)
         ctx.dest_account.should be_kind_of(Account)
         ctx.dest_account.should be_instance_of(Account)
         ctx.dest_account.should respond_to(:transfer_in)
