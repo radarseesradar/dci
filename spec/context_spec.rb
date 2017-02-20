@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'dci'
 include DCI
+using ObjectRoleRefinements
 
 class Account
   @accounts = {}

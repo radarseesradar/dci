@@ -1,4 +1,5 @@
 module DCI
+  using ObjectRoleRefinements
 
   # Context - The Context is the class (or its instance) whose code includes the roles
   # for a given algorithm, scenario, or use case, as well as the code to map these
